@@ -1,25 +1,22 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import styled from "styled-components";
+import TaskInput from "./components/TaskInput";
+import TaskList from "./components/TaskList";
 
-function App() {
+// 设置主窗口样式
+const Boxtask = styled.div`
+  width: outerwidth + "px";
+  height: 100vh;
+  border-radius: 2px;
+`;
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Boxtask>
+      <TaskList />
+      <TaskInput />
+    </Boxtask>
   );
-}
+};
 
 export default App;
