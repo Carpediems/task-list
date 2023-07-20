@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Input } from "antd";
 import styled from "styled-components";
-import { useDispatch } from "react-redux";
+import {useDispatch} from "react-redux";
 
 const InputBox = styled.div`
   width: 100%;
@@ -21,9 +21,9 @@ const TaskInput = () => {
   const EnterEvent = () => {
     dispatch({
       type: "add",
-      AddList: { id: new Date().getTime(), text: InputText, chagecheck: false },
+      AddList: { id: new Date().getTime(), text: InputText, chagecheck: false,TextBoolean:false },
     });
-    dispatch({ type: "setup" });
+    dispatch({type:"setup"})
     setInputText("");
   };
   return (

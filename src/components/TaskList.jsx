@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useRef } from "react";
 import styled from "styled-components";
 import { DeleteOutlined } from "@ant-design/icons";
-import { Checkbox } from "antd";
+import { Checkbox, Input } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 
 const UlBox = styled.ul`
@@ -23,36 +23,63 @@ const UlBox = styled.ul`
       padding-left: 5px;
       box-sizing: border-box;
     }
-    .pText{
+    .pText {
       text-decoration: line-through;
     }
   }
 `;
 const TaskList = () => {
+  // 任务列表渲染数据
   let todolist = useSelector((state) => state.get("TodoList"));
+  // 引入redux方法
   const dispatch = useDispatch();
-
+  // 用于获取节点数据
+  const inputRef = useRef(null);
+  // 封装公共逻辑方法
+  const updatelocalStorage = () => {
+    dispatch({ type: "todoupdate" });
+    localStorage.setItem("TodoList", JSON.stringify(todolist));
+  };
   // 任务删除功能
   const DeleteList = (id) => () => {
     dispatch({ type: "delete", ListId: id });
     localStorage.setItem("TodoList", JSON.stringify(todolist));
   };
-  // 完成任务功能
+
+  // 多选框完成任务功能
   const onChange = (index) => (e) => {
     todolist.forEach((item, id) => {
       if (id === index) {
         item.chagecheck = !item.chagecheck;
       }
     });
-    dispatch({type:"todoupdate"})
-    localStorage.setItem("TodoList", JSON.stringify(todolist));
+    updatelocalStorage();
+  };
+
+  const submit = (index) => () => {
+    dispatch({
+      type: "enterChange",
+      InputId: index,
+      text: inputRef.current.input.value,
+    });
+    updatelocalStorage();
   };
   return (
     <UlBox>
       {todolist?.map((item, index) => (
         <li key={item.id}>
-          <Checkbox onChange={onChange(index)} checked={item.chagecheck}></Checkbox>
-          <p className={item.chagecheck?'pText':''}>{item.text}</p>
+          <Checkbox
+            onChange={onChange(index)}
+            checked={item.chagecheck}
+          ></Checkbox>
+          <Input
+            className={item.chagecheck ? "pText" : ""}
+            defaultValue={item.text}
+            type="text"
+            bordered={false}
+            onBlur={submit(index)}
+            ref={inputRef}
+          />
           <DeleteOutlined onClick={DeleteList(index)}></DeleteOutlined>
         </li>
       ))}

@@ -1,7 +1,7 @@
 import { Map } from "immutable";
 
- const initState = Map({
-  TodoList: JSON.parse(localStorage.getItem("TodoList"))||[],
+const initState = Map({
+  TodoList: JSON.parse(localStorage.getItem("TodoList")) || [],
 });
 
 const reducer = (state = initState, action) => {
@@ -16,9 +16,18 @@ const reducer = (state = initState, action) => {
         return [...v];
       });
     case "todoupdate":
-      return state.update("TodoList",v=>[...v])
+      return state.update("TodoList", (v) => [...v]);
+    case "enterChange":
+      return state.update("TodoList", (v) => {
+        return v.map((item, index) => {
+          if (index === action.InputId) {
+            item.text = action.text;
+          }
+          return item;
+        });
+      });
     case "setup":
-       localStorage.setItem(
+      localStorage.setItem(
         "TodoList",
         JSON.stringify([...state.get("TodoList")])
       );
