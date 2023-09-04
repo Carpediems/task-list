@@ -1,0 +1,19 @@
+.LeftBox{
+    width: 12%;
+    height: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+}
+.LeftBox li{
+    width: 100%;
+    height: 35px;
+    text-align: center;
+    line-height: 35px;
+    margin-top: 15px;
+    cursor:pointer;
+    font-size: 18px;
+}
+.LeftBox li:nth-child(1){
+    background:#E7F4FF ;
+    border-left: 5px solid #1890FF;
+}

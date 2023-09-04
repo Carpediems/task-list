@@ -9,7 +9,7 @@ const InputBox = styled.div`
   padding: 0 5px 15px 5px;
   box-sizing: border-box;
   .ant-input {
-    height: 35px;
+    height: 40px;
   }
 `;
 const TaskInput = () => {

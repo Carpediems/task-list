@@ -4,6 +4,12 @@ import { DeleteOutlined } from "@ant-design/icons";
 import { Checkbox, Input } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 
+
+
+
+
+
+
 const UlBox = styled.ul`
   height: calc(100% - 40px);
   background: #f5f5f5;
@@ -25,6 +31,7 @@ const UlBox = styled.ul`
     }
     .pText {
       text-decoration: line-through;
+      color: #939393;
     }
   }
 `;

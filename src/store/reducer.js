@@ -27,9 +27,7 @@ const reducer = (state = initState, action) => {
         });
       });
     case "setup":
-      localStorage.setItem(
-        "TodoList",
-        JSON.stringify([...state.get("TodoList")])
+      localStorage.setItem("TodoList", JSON.stringify([...state.get("TodoList")])
       );
     default:
       return state;
