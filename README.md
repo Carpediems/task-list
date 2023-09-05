@@ -1,8 +1,6 @@
 
 #### 项目使用的第三方插件
 + electron-is-dev
-
-
 #### 项目启动
 1.启动 `react` 项目
 ```shell

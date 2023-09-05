@@ -24,9 +24,9 @@ Store.initRenderer()
 //   event.reply('data', data);
 // });
 
-try {
-  require("electron-reloader")(module, {});
-} catch (_) {}
+// try {
+//   require("electron-reloader")(module, {});
+// } catch (_) {}
 
 function createWindow() {
   Menu.setApplicationMenu(null);
