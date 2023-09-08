@@ -1,14 +1,10 @@
 import React, { useRef } from "react";
 import styled from "styled-components";
 import { DeleteOutlined } from "@ant-design/icons";
-import { Checkbox, Input } from "antd";
+import { Button, Checkbox, Input } from "antd";
 import { useSelector, useDispatch } from "react-redux";
-
-
-
-
-
-
+import AutoIcon from "./icon/AutoIcon";
+import { Delete } from "../utils/iconfont";
 
 const UlBox = styled.ul`
   height: calc(100% - 40px);
@@ -87,7 +83,12 @@ const TaskList = () => {
             onBlur={submit(index)}
             ref={inputRef}
           />
-          <DeleteOutlined onClick={DeleteList(index)}></DeleteOutlined>
+          {/*<DeleteOutlined onClick={DeleteList(index)}></DeleteOutlined>*/}
+          <Button
+            onClick={DeleteList(index)}
+            icon={<AutoIcon icon={Delete} />}
+            style={{ border: "none", marginTop: "5px" }}
+          />
         </li>
       ))}
     </UlBox>

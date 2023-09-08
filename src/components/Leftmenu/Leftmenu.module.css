@@ -1,10 +1,14 @@
 .LeftBox{
     width: 12%;
     height: 100%;
+}
+.ulBox{
+    width: 100%;
+    height:calc(100% - 45px);
     padding: 10px;
     box-sizing: border-box;
 }
-.LeftBox li{
+.ulBox li{
     width: 100%;
     height: 35px;
     text-align: center;
@@ -13,7 +17,27 @@
     cursor:pointer;
     font-size: 18px;
 }
-.LeftBox li:nth-child(1){
+.ulBox li:nth-child(1){
     background:#E7F4FF ;
     border-left: 5px solid #1890FF;
 }
+footer{
+    width: 100%;
+    height: 30px;
+    margin-bottom: 15px;
+    /*border:1px solid red;*/
+}
+footer .createButton{
+    width: 100%;
+    height: 100%;
+    background: none;
+    border:none;
+    cursor:pointer;
+    color: #4C4C4C;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+/*footer .createButton:hover{*/
+/*    color: black;*/
+/*}*/

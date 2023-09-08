@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 import { Input } from "antd";
 import styled from "styled-components";
-import {useDispatch} from "react-redux";
-
+import { useDispatch } from "react-redux";
+import AutoIcon from "./icon/AutoIcon";
+import { Add } from "../utils/iconfont";
 const InputBox = styled.div`
   width: 100%;
-  height: 40px;
+  height: 30px;
   padding: 0 5px 15px 5px;
   box-sizing: border-box;
   .ant-input {
-    height: 40px;
+    height: 30px;
   }
 `;
 const TaskInput = () => {
@@ -21,9 +22,14 @@ const TaskInput = () => {
   const EnterEvent = () => {
     dispatch({
       type: "add",
-      AddList: { id: new Date().getTime(), text: InputText, chagecheck: false,TextBoolean:false },
+      AddList: {
+        id: new Date().getTime(),
+        text: InputText,
+        chagecheck: false,
+        TextBoolean: false,
+      },
     });
-    dispatch({type:"setup"})
+    dispatch({ type: "setup" });
     setInputText("");
   };
   return (
@@ -33,6 +39,7 @@ const TaskInput = () => {
         value={InputText}
         onChange={AddList}
         onPressEnter={EnterEvent}
+        prefix={<AutoIcon icon={Add} />}
       />
     </InputBox>
   );

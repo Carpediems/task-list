@@ -37,7 +37,8 @@ function createWindow() {
     webPreferences:{
       nodeIntegration:true,
       enablePreferredSizeMode:true
-    }
+    },
+    icon:'public/icon/taskList.ico'
   });
   win.title = "待办事项";
   // if (process.env.WEBPACK_DEV_SERVER_URL) {
