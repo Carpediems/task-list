@@ -1,8 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
-import TaskInput from "./components/TaskInput";
-import TaskList from "./components/TaskList";
 import LeftMenu from "./components/Leftmenu/Leftmenu";
+import TaskListAndInput from "./components/TaskListAndInput";
 
 // 设置主窗口样式
 const Boxtask = styled.div`
@@ -10,7 +9,8 @@ const Boxtask = styled.div`
   height: 100vh;
   border-radius: 2px;
   display: flex;
-  main{
+
+  main {
     flex: 1;
     background: #f5f5f5;
     box-sizing: border-box;
@@ -18,15 +18,14 @@ const Boxtask = styled.div`
   }
 `;
 
-
 const App = () => {
+  useEffect(() => {}, []);
   return (
     <Boxtask>
-        <LeftMenu/>
-        <main>
-            <TaskList />
-            <TaskInput />
-        </main>
+      <LeftMenu />
+      <main>
+        <TaskListAndInput></TaskListAndInput>
+      </main>
     </Boxtask>
   );
 };
