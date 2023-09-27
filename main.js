@@ -4,24 +4,20 @@ const {
   Menu,
   ipcMain,
   globalShortcut,
+  Tray,
 } = require("electron");
-// const Store = require("electron-store");
-
+const path = require("path");
 const isDev = require("electron-is-dev");
-
-/**
- * 调用 electron-store
- */
-// Store.initRenderer();
 
 try {
   require("electron-reloader")(module, {});
 } catch (_) {}
-
+let win;
+let tray;
 function createWindow() {
   // Menu.setApplicationMenu(null);
   // 创建浏览器窗口
-  let win = new BrowserWindow({
+  win = new BrowserWindow({
     width: 1200,
     height: 740,
     webPreferences: {
@@ -30,7 +26,12 @@ function createWindow() {
       enablePreferredSizeMode: true,
       contextIsolation: false,
     },
+
     icon: "public/icon/taskList.ico",
+  });
+  win.on("close", (event) => {
+    event.preventDefault(); // 阻止窗口关闭
+    win.hide(); // 隐藏主窗口
   });
   win.title = "待办事项";
   win.webContents.openDevTools({ mode: "left" });
@@ -40,12 +41,34 @@ function createWindow() {
   } else {
     win.webContents.openDevTools();
   }
-
   const urlLocation = isDev ? "http:localhost:3000" : "myUrl";
   // win.loadURL("http:localhost:3000");
   win.loadURL(urlLocation);
   // win.loadFile('')
   // win.loadFile("build/index.html");
 }
+app.whenReady().then(() => {
+  createWindow();
 
-app.whenReady().then(createWindow);
+  // 创建托盘图标
+  tray = new Tray("public/icon/taskList.ico");
+  const contextMenu = Menu.buildFromTemplate([
+    { label: "打开主窗口", click: () => win.show() },
+    { label: "退出", click: () => app.quit() },
+  ]);
+
+  tray.setToolTip("My App");
+  tray.setContextMenu(contextMenu);
+
+  tray.on("click", () => {
+    win.show(); // 点击托盘图标时显示主窗口
+  });
+});
+
+app.on("before-quit", () => {
+  tray.destroy(); // 退出时销毁托盘图标
+});
+app.on("activate", () => {
+  win.show(); // 点击Dock图标时显示主窗口
+});
+// app.whenReady().then(createWindow);

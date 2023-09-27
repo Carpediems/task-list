@@ -86,6 +86,9 @@ class TaskListAndInput extends Component {
     this.setState({ TaskListInput: e.target.value });
   };
   onSubmit = (id) => () => {
+    if (this.state.TaskListInput === "") {
+      return;
+    }
     db.get("mainList")
       .find({ id: id })
       .assign({ text: this.state.TaskListInput })
@@ -121,7 +124,7 @@ class TaskListAndInput extends Component {
   render() {
     return (
       <TaskList>
-        <h3>日常任务</h3>
+        <h3>工作任务</h3>
         <ul>
           {this.state.taskList?.map((item, index) => (
             <li key={item.id}>

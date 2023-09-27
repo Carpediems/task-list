@@ -13,15 +13,29 @@ class LeftMenu extends Component {
       LeftList: [],
       text: "待办事项",
       BlurValue: false,
-      InputController: false,
+      // InputController: false,
       TaskListInput: "",
+      TranslatedText: "",
     };
   }
 
   componentDidMount() {
     this.setState({ LeftList: db.get("taskList").value() });
   }
-  createList = () => {
+
+  /**
+   * 数据双向绑定
+   * @param e
+   * @constructor
+   */
+  ChangeValue = (e) => {
+    this.setState({ TaskListInput: e.target.value });
+  };
+  /**
+   * 点击新建列表后创建一个新的列表内容（左侧）
+   * @returns {Promise<void>}
+   */
+  createList = async () => {
     db.get("taskList")
       .push({
         key: new Date().getTime(),
@@ -32,13 +46,23 @@ class LeftMenu extends Component {
     this.forceUpdate();
   };
 
+  /**
+   * 点击 × 号后删除指定的列表
+   * @param id
+   * @returns {(function(): void)|*}
+   * @constructor
+   */
   DeleteList = (id) => () => {
     db.get("taskList").remove({ key: id }).write();
     this.forceUpdate();
   };
-  ChangeValue = (e) => {
-    this.setState({ TaskListInput: e.target.value });
-  };
+
+  /**
+   * 双击后出现输入框,由输入框中输入文字修改列表主题
+   * @param id
+   * @param BlurChange
+   * @returns {(function(): void)|*}
+   */
   onDoubleFocus = (id, BlurChange) => () => {
     db.get("taskList")
       .find({ key: id })
@@ -46,13 +70,26 @@ class LeftMenu extends Component {
       .write();
     this.forceUpdate();
   };
+
+  /**
+   * 失去焦点后提交修改后的内容
+   * @param id
+   * @param BlurChange
+   * @returns {(function(): void)|*}
+   */
   onBlurChange = (id, BlurChange) => () => {
-    this.setState({ InputController: false });
+    if (this.state.TaskListInput.length === 0) {
+      db.get("taskList")
+        .find({ key: id })
+        .assign({ BlurChange: !BlurChange })
+        .write();
+      this.forceUpdate();
+      return;
+    }
     db.get("taskList")
       .find({ key: id })
       .assign({ BlurChange: !BlurChange, title: this.state.TaskListInput })
       .write();
-    db.get("taskList").find({ key: id }).assign({ title: this.state.title });
     this.forceUpdate();
   };
 
