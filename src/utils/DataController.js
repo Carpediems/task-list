@@ -7,12 +7,10 @@ const db = low(adapter);
 db.defaults({
   taskList: [
     {
-      key: 0,
+      CheckoutTitle: "mainList",
+      key: 1695896526741,
       title: "工作任务",
-    },
-    {
-      key: 1,
-      title: "日常任务",
+      BlurChange: false,
     },
   ],
   mainList: [],

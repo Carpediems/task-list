@@ -50,13 +50,32 @@ class TaskListAndInput extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      taskList: [],
+      taskList: db.get("mainList").value(),
       InputText: "",
       TaskListInput: "",
+      Title: "工作任务",
+      ChekOutList: "mainList",
+      id: db.get("taskList").value()[0].CheckoutTitle,
     };
   }
   componentDidMount() {
-    this.setState({ taskList: db.get("mainList").value() });
+    // this.setState({ taskList: db.get("mainList").value() });
+  }
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (this.props.props.CheckoutTitle !== prevState.id) {
+      this.setState({
+        id: this.props.props.CheckoutTitle,
+        Title: this.props.props.title,
+        taskList: db.get(this.state.ChekOutList).value(),
+        ChekOutList: this.props.props.CheckoutTitle,
+      });
+    }
+
+    if (prevState.Title !== this.props.props.title) {
+      console.log(this.props.props.title);
+      console.log("buzhiyi");
+      this.setState({ Title: this.props.props.title });
+    }
   }
 
   /**
@@ -76,6 +95,7 @@ class TaskListAndInput extends Component {
   // 删除功能
   DeleteList = (id) => () => {
     db.get("mainList").remove({ id: id }).write();
+    console.log(this.state.ChekOutList);
     this.forceUpdate();
   };
   /**
@@ -93,8 +113,8 @@ class TaskListAndInput extends Component {
       .find({ id: id })
       .assign({ text: this.state.TaskListInput })
       .write();
-    this.forceUpdate();
     this.setState({ TaskListInput: "" });
+    this.forceUpdate();
   };
   /**
    * 输入框数据双向绑定
@@ -110,7 +130,7 @@ class TaskListAndInput extends Component {
    * @constructor
    */
   EnterEvent = () => {
-    db.get("mainList")
+    db.get(this.state.ChekOutList)
       .push({
         id: new Date().getTime(),
         text: this.state.InputText,
@@ -119,12 +139,12 @@ class TaskListAndInput extends Component {
       })
       .write();
     this.setState({ InputText: "" });
-    // this.forceUpdate();
+    this.forceUpdate();
   };
   render() {
     return (
       <TaskList>
-        <h3>工作任务</h3>
+        <h3>{this.state.Title}</h3>
         <ul>
           {this.state.taskList?.map((item, index) => (
             <li key={item.id}>

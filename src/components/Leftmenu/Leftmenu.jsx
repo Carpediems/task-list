@@ -13,12 +13,16 @@ class LeftMenu extends Component {
       LeftList: [],
       text: "待办事项",
       BlurValue: false,
-      // InputController: false,
       TaskListInput: "",
       TranslatedText: "",
     };
   }
+  onCheckoutList = (arg) => (event) => {
+    event.stopPropagation();
+    this.forceUpdate();
 
+    this.props.onSingleList(arg);
+  };
   componentDidMount() {
     this.setState({ LeftList: db.get("taskList").value() });
   }
@@ -36,13 +40,16 @@ class LeftMenu extends Component {
    * @returns {Promise<void>}
    */
   createList = async () => {
+    let CheckoutText = new Date().getTime();
     db.get("taskList")
       .push({
+        CheckoutTitle: CheckoutText,
         key: new Date().getTime(),
         title: this.state.text,
         BlurChange: false,
       })
       .write();
+    db.set(CheckoutText, []).write();
     this.forceUpdate();
   };
 
@@ -52,8 +59,12 @@ class LeftMenu extends Component {
    * @returns {(function(): void)|*}
    * @constructor
    */
-  DeleteList = (id) => () => {
+  DeleteList = (id, CheckoutId) => () => {
     db.get("taskList").remove({ key: id }).write();
+    db.unset(CheckoutId).write();
+    if (db.get("taskList").value().length <= 1) {
+      window.location.reload();
+    }
     this.forceUpdate();
   };
 
@@ -77,19 +88,22 @@ class LeftMenu extends Component {
    * @param BlurChange
    * @returns {(function(): void)|*}
    */
-  onBlurChange = (id, BlurChange) => () => {
+  onBlurChange = (id, BlurChange) => (e) => {
     if (this.state.TaskListInput.length === 0) {
       db.get("taskList")
         .find({ key: id })
         .assign({ BlurChange: !BlurChange })
         .write();
-      this.forceUpdate();
       return;
+    } else {
+      db.get("taskList")
+        .find({ key: id })
+        .assign({ BlurChange: !BlurChange, title: this.state.TaskListInput })
+        .write();
+      const args = db.get("taskList").find({ key: id }).value();
+      this.onCheckoutList(args)(e);
     }
-    db.get("taskList")
-      .find({ key: id })
-      .assign({ BlurChange: !BlurChange, title: this.state.TaskListInput })
-      .write();
+
     this.forceUpdate();
   };
 
@@ -99,7 +113,7 @@ class LeftMenu extends Component {
         <div className={styles.LeftBox}>
           <ul className={styles.ulBox}>
             {this.state.LeftList.map((item) => (
-              <li key={item.key}>
+              <li key={item.key} onClick={this.onCheckoutList(item)}>
                 <AutoIcon icon={ListMore}></AutoIcon>
                 {item.BlurChange ? (
                   <Input
@@ -121,6 +135,9 @@ class LeftMenu extends Component {
                       flex: "1",
                       textAlign: "left",
                       textIndent: "5px",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "nowrap",
                     }}
                   >
                     {item.title}
@@ -128,7 +145,7 @@ class LeftMenu extends Component {
                 )}
                 <CloseOutlined
                   style={{ fontSize: "12px", marginLeft: "5px" }}
-                  onClick={this.DeleteList(item.key)}
+                  onClick={this.DeleteList(item.key, item.CheckoutTitle)}
                 />
               </li>
             ))}

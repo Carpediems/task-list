@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import LeftMenu from "./components/Leftmenu/Leftmenu";
 import TaskListAndInput from "./components/TaskListAndInput";
@@ -19,12 +19,17 @@ const Boxtask = styled.div`
 `;
 
 const App = () => {
-  useEffect(() => {}, []);
+  const [CheckoutArg, setCheckoutArg] = useState([]);
+  useEffect(() => {}, [CheckoutArg]);
+  const getTitle = (arg) => {
+    console.log(arg);
+    setCheckoutArg(arg);
+  };
   return (
     <Boxtask>
-      <LeftMenu />
+      <LeftMenu onSingleList={getTitle} />
       <main>
-        <TaskListAndInput></TaskListAndInput>
+        <TaskListAndInput props={CheckoutArg}></TaskListAndInput>
       </main>
     </Boxtask>
   );

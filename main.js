@@ -41,9 +41,11 @@ function createWindow() {
   } else {
     win.webContents.openDevTools();
   }
-  const urlLocation = isDev ? "http:localhost:3000" : "myUrl";
-  // win.loadURL("http:localhost:3000");
-  win.loadURL(urlLocation);
+  const urlLocation = isDev ? "http:localhost:3000" : "build/index.html";
+  // urlLocation ? win.loadURL(urlLocation) : win.loadFile(urlLocation);
+
+  win.loadURL("http:localhost:3000");
+
   // win.loadFile('')
   // win.loadFile("build/index.html");
 }
@@ -57,7 +59,7 @@ app.whenReady().then(() => {
     { label: "退出", click: () => app.quit() },
   ]);
 
-  tray.setToolTip("My App");
+  tray.setToolTip("我的待办");
   tray.setContextMenu(contextMenu);
 
   tray.on("click", () => {
