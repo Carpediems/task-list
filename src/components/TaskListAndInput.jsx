@@ -8,7 +8,7 @@ const TaskList = styled.main`
   height: 100%;
   h3 {
     margin: 0;
-    padding: 10px 0 0 10px;
+    padding: 10px 0 5px 10px;
     box-sizing: border-box;
   }
   ul {
@@ -58,22 +58,20 @@ class TaskListAndInput extends Component {
       id: db.get("taskList").value()[0].CheckoutTitle,
     };
   }
-  componentDidMount() {
-    // this.setState({ taskList: db.get("mainList").value() });
-  }
+
   componentDidUpdate(prevProps, prevState, snapshot) {
-    if (this.props.props.CheckoutTitle !== prevState.id) {
+    if (this.props.props.CheckId !== prevState.id) {
       this.setState({
-        id: this.props.props.CheckoutTitle,
+        id: this.props.props.CheckId,
         Title: this.props.props.title,
         taskList: db.get(this.state.ChekOutList).value(),
-        ChekOutList: this.props.props.CheckoutTitle,
+        ChekOutList: this.props.props.CheckId,
       });
     }
-
-    if (prevState.Title !== this.props.props.title) {
-      console.log(this.props.props.title);
-      console.log("buzhiyi");
+    if (
+      prevState.id === this.props.props.CheckId &&
+      prevState.Title !== this.props.props.title
+    ) {
       this.setState({ Title: this.props.props.title });
     }
   }

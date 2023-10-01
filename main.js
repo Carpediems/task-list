@@ -26,7 +26,6 @@ function createWindow() {
       enablePreferredSizeMode: true,
       contextIsolation: false,
     },
-
     icon: "public/icon/taskList.ico",
   });
   win.on("close", (event) => {
@@ -41,6 +40,7 @@ function createWindow() {
   } else {
     win.webContents.openDevTools();
   }
+  win.setMenuBarVisibility(false); // 隐藏菜单栏
   const urlLocation = isDev ? "http:localhost:3000" : "build/index.html";
   // urlLocation ? win.loadURL(urlLocation) : win.loadFile(urlLocation);
 

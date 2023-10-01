@@ -20,16 +20,21 @@ const Boxtask = styled.div`
 
 const App = () => {
   const [CheckoutArg, setCheckoutArg] = useState([]);
-  useEffect(() => {}, [CheckoutArg]);
-  const getTitle = (arg) => {
-    console.log(arg);
-    setCheckoutArg(arg);
+  const [title, setTitle] = useState("");
+  const [key, setKey] = useState("");
+  useEffect(() => {}, [CheckoutArg, title, key]);
+  const getTitle = (CheckId, title, key) => {
+    setCheckoutArg(CheckId);
+    setTitle(title);
+    setKey(key);
   };
   return (
     <Boxtask>
       <LeftMenu onSingleList={getTitle} />
       <main>
-        <TaskListAndInput props={CheckoutArg}></TaskListAndInput>
+        <TaskListAndInput
+          props={{ CheckId: CheckoutArg, title: title, key: key }}
+        ></TaskListAndInput>
       </main>
     </Boxtask>
   );

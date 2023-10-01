@@ -17,11 +17,11 @@ class LeftMenu extends Component {
       TranslatedText: "",
     };
   }
-  onCheckoutList = (arg) => (event) => {
+  onCheckoutList = (CheckId, title, key) => (event) => {
     event.stopPropagation();
     this.forceUpdate();
 
-    this.props.onSingleList(arg);
+    this.props.onSingleList(CheckId, title, key);
   };
   componentDidMount() {
     this.setState({ LeftList: db.get("taskList").value() });
@@ -101,7 +101,7 @@ class LeftMenu extends Component {
         .assign({ BlurChange: !BlurChange, title: this.state.TaskListInput })
         .write();
       const args = db.get("taskList").find({ key: id }).value();
-      this.onCheckoutList(args)(e);
+      this.onCheckoutList(args.CheckoutTitle, args.title, args.key)(e);
     }
 
     this.forceUpdate();
@@ -113,7 +113,14 @@ class LeftMenu extends Component {
         <div className={styles.LeftBox}>
           <ul className={styles.ulBox}>
             {this.state.LeftList.map((item) => (
-              <li key={item.key} onClick={this.onCheckoutList(item)}>
+              <li
+                key={item.key}
+                onClick={this.onCheckoutList(
+                  item.CheckoutTitle,
+                  item.title,
+                  item.key
+                )}
+              >
                 <AutoIcon icon={ListMore}></AutoIcon>
                 {item.BlurChange ? (
                   <Input
