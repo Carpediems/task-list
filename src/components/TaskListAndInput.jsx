@@ -50,7 +50,7 @@ class TaskListAndInput extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      taskList: db.get("mainList").value(),
+      taskList: db.get("mainList").sortBy("chagecheck").value(),
       InputText: "",
       TaskListInput: "",
       Title: "工作任务",
@@ -60,19 +60,20 @@ class TaskListAndInput extends Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    if (this.props.props.CheckId !== prevState.id) {
-      this.setState({
-        id: this.props.props.CheckId,
-        Title: this.props.props.title,
-        taskList: db.get(this.state.ChekOutList).value(),
-        ChekOutList: this.props.props.CheckId,
-      });
-    }
-    if (
-      prevState.id === this.props.props.CheckId &&
-      prevState.Title !== this.props.props.title
-    ) {
-      this.setState({ Title: this.props.props.title });
+    if (this.props.props.CheckId.length > 1) {
+      if (this.props.props.CheckId !== prevState.id) {
+        this.setState({
+          id: this.props.props.CheckId,
+          Title: this.props.props.title,
+          taskList: db.get(this.state.ChekOutList).value(),
+          ChekOutList: this.props.props.CheckId,
+        });
+      } else if (
+        prevState.id === this.props.props.CheckId &&
+        prevState.Title !== this.props.props.title
+      ) {
+        this.setState({ Title: this.props.props.title });
+      }
     }
   }
 
@@ -83,18 +84,21 @@ class TaskListAndInput extends Component {
    * @returns {(function(*): void)|*}
    */
   onChange = (id, chagecheck) => (e) => {
-    db.get("mainList")
+    db.get(this.state.ChekOutList)
       .find({ id: id })
       .assign({ chagecheck: !chagecheck })
       .write();
-    this.forceUpdate();
+    this.setState({
+      taskList: db.get(this.state.ChekOutList).sortBy("chagecheck").value(),
+    });
   };
 
   // 删除功能
   DeleteList = (id) => () => {
-    db.get("mainList").remove({ id: id }).write();
-    console.log(this.state.ChekOutList);
-    this.forceUpdate();
+    db.get(this.state.ChekOutList).remove({ id: id }).write();
+    this.setState({
+      taskList: db.get(this.state.ChekOutList).sortBy("chagecheck").value(),
+    });
   };
   /**
    * 列表数据的双向绑定
@@ -103,6 +107,12 @@ class TaskListAndInput extends Component {
   onSubmitChange = (e) => {
     this.setState({ TaskListInput: e.target.value });
   };
+
+  /**
+   * 在原有任务上进行修改
+   * @param id
+   * @returns {(function(): void)|*}
+   */
   onSubmit = (id) => () => {
     if (this.state.TaskListInput === "") {
       return;
@@ -111,8 +121,10 @@ class TaskListAndInput extends Component {
       .find({ id: id })
       .assign({ text: this.state.TaskListInput })
       .write();
-    this.setState({ TaskListInput: "" });
-    this.forceUpdate();
+    this.setState({
+      TaskListInput: "",
+      taskList: db.get(this.state.ChekOutList).sortBy("chagecheck").value(),
+    });
   };
   /**
    * 输入框数据双向绑定
@@ -136,8 +148,10 @@ class TaskListAndInput extends Component {
         TextBoolean: false,
       })
       .write();
-    this.setState({ InputText: "" });
-    this.forceUpdate();
+    this.setState({
+      InputText: "",
+      taskList: db.get(this.state.ChekOutList).sortBy("chagecheck").value(),
+    });
   };
   render() {
     return (
