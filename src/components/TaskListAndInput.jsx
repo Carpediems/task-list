@@ -60,7 +60,7 @@ class TaskListAndInput extends Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    if (this.props.props.CheckId) {
+    if (this.props.props.CheckId || this.props.props.CheckId.length >= 1) {
       if (this.props.props.CheckId !== prevState.id) {
         this.setState({
           id: this.props.props.CheckId,
@@ -88,6 +88,7 @@ class TaskListAndInput extends Component {
       .find({ id: id })
       .assign({ chagecheck: !chagecheck })
       .write();
+    // this.forceUpdate();
     this.setState({
       taskList: db.get(this.state.ChekOutList).sortBy("chagecheck").value(),
     });
@@ -96,6 +97,7 @@ class TaskListAndInput extends Component {
   // 删除功能
   DeleteList = (id) => () => {
     db.get(this.state.ChekOutList).remove({ id: id }).write();
+    // this.forceUpdate();
     this.setState({
       taskList: db.get(this.state.ChekOutList).sortBy("chagecheck").value(),
     });
@@ -123,8 +125,8 @@ class TaskListAndInput extends Component {
       .write();
     this.setState({
       TaskListInput: "",
-      taskList: db.get(this.state.ChekOutList).sortBy("chagecheck").value(),
     });
+    this.forceUpdate();
   };
   /**
    * 输入框数据双向绑定
@@ -152,6 +154,7 @@ class TaskListAndInput extends Component {
       InputText: "",
       taskList: db.get(this.state.ChekOutList).sortBy("chagecheck").value(),
     });
+    // this.forceUpdate();
   };
   render() {
     return (

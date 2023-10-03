@@ -19,7 +19,6 @@ class LeftMenu extends Component {
   }
   onCheckoutList = (CheckId, title, key) => (event) => {
     event.stopPropagation();
-    this.forceUpdate();
 
     this.props.onSingleList(CheckId, title, key);
   };
