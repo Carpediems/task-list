@@ -19,7 +19,7 @@ const Boxtask = styled.div`
 `;
 
 const App = () => {
-  const [CheckoutArg, setCheckoutArg] = useState([]);
+  const [CheckoutArg, setCheckoutArg] = useState("");
   const [title, setTitle] = useState("");
   const [key, setKey] = useState("");
   useEffect(() => {}, [CheckoutArg, title, key]);

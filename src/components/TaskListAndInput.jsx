@@ -60,7 +60,7 @@ class TaskListAndInput extends Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    if (this.props.props.CheckId || this.props.props.CheckId.length >= 1) {
+    if (this.props.props.CheckId) {
       if (this.props.props.CheckId !== prevState.id) {
         this.setState({
           id: this.props.props.CheckId,
