@@ -37,12 +37,9 @@ const TaskList = styled.main`
     }
   }
   .InputDiv {
-    height: 30px;
+    height: 40px;
     padding: 0 5px 15px 5px;
     box-sizing: border-box;
-    .ant-input {
-      height: 30px;
-    }
   }
 `;
 
