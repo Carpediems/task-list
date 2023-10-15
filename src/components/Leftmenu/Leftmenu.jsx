@@ -17,14 +17,20 @@ class LeftMenu extends Component {
       TranslatedText: "",
     };
   }
-  onCheckoutList = (CheckId, title, key) => (event) => {
-    event.stopPropagation();
-
-    this.props.onSingleList(CheckId, title, key);
-  };
   componentDidMount() {
     this.setState({ LeftList: db.get("taskList").value() });
   }
+  /**
+   * 点击左侧列表切换不同界面的任务
+   * @param CheckId
+   * @param title
+   * @param key
+   * @returns {(function(*): void)|*}
+   */
+  onCheckoutList = (CheckId, title, key) => (event) => {
+    event.stopPropagation();
+    this.props.onSingleList(CheckId, title, key);
+  };
 
   /**
    * 数据双向绑定
@@ -49,7 +55,7 @@ class LeftMenu extends Component {
       })
       .write();
     db.set(CheckoutText, []).write();
-    this.forceUpdate();
+    this.setState({ LeftList: db.get("taskList").value() });
   };
 
   /**
@@ -64,7 +70,7 @@ class LeftMenu extends Component {
     if (db.get("taskList").value().length <= 1) {
       window.location.reload();
     }
-    this.forceUpdate();
+    this.setState({ LeftList: db.get("taskList").value() });
   };
 
   /**
@@ -78,7 +84,7 @@ class LeftMenu extends Component {
       .find({ key: id })
       .assign({ BlurChange: !BlurChange })
       .write();
-    this.forceUpdate();
+    this.setState({ LeftList: db.get("taskList").value() });
   };
 
   /**
@@ -103,7 +109,7 @@ class LeftMenu extends Component {
       this.onCheckoutList(args.CheckoutTitle, args.title, args.key)(e);
     }
 
-    this.forceUpdate();
+    this.setState({ LeftList: db.get("taskList").value() });
   };
 
   render() {

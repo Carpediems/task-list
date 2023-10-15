@@ -44,18 +44,17 @@ function createWindow() {
   const urlLocation = isDev ? "http:localhost:3000" : "build/index.html";
   // urlLocation ? win.loadURL(urlLocation) : win.loadFile(urlLocation);
 
-  // win.loadURL("http:localhost:3000");
+  win.loadURL("http:localhost:3000");
 
   // win.loadFile('')
-  win.loadFile("build/index.html");
+  // win.loadFile("build/index.html");
 }
 app.whenReady().then(() => {
   createWindow();
 
   // 创建托盘图标
-  // tray = new Tray("public/icon/taskList.ico");
-  tray = new Tray("d:/ADocuments/A我的桌面/task-list/build/icon/taskList.ico");
-  // tray = new Tray("icon/taskList.ico");
+  tray = new Tray("public/icon/taskList.ico");
+  // tray = new Tray("d:/ADocuments/A我的桌面/task-list/build/icon/taskList.ico");
   const contextMenu = Menu.buildFromTemplate([
     { label: "打开主窗口", click: () => win.show() },
     { label: "退出", click: () => app.quit() },

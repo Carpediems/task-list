@@ -13,7 +13,6 @@ const TaskList = styled.main`
   }
   ul {
     height: calc(100% - 60px);
-    //background: #f5f5f5;
     overflow: auto;
     li {
       list-style: none;
@@ -85,7 +84,6 @@ class TaskListAndInput extends Component {
       .find({ id: id })
       .assign({ chagecheck: !chagecheck })
       .write();
-    // this.forceUpdate();
     this.setState({
       taskList: db.get(this.state.ChekOutList).sortBy("chagecheck").value(),
     });
@@ -94,7 +92,6 @@ class TaskListAndInput extends Component {
   // 删除功能
   DeleteList = (id) => () => {
     db.get(this.state.ChekOutList).remove({ id: id }).write();
-    // this.forceUpdate();
     this.setState({
       taskList: db.get(this.state.ChekOutList).sortBy("chagecheck").value(),
     });
@@ -122,8 +119,8 @@ class TaskListAndInput extends Component {
       .write();
     this.setState({
       TaskListInput: "",
+      taskList: db.get(this.state.ChekOutList).sortBy("chagecheck").value(),
     });
-    this.forceUpdate();
   };
   /**
    * 输入框数据双向绑定
@@ -151,7 +148,6 @@ class TaskListAndInput extends Component {
       InputText: "",
       taskList: db.get(this.state.ChekOutList).sortBy("chagecheck").value(),
     });
-    // this.forceUpdate();
   };
   render() {
     return (
@@ -171,7 +167,6 @@ class TaskListAndInput extends Component {
                 bordered={false}
                 onBlur={this.onSubmit(item.id)}
                 onChange={this.onSubmitChange}
-                // ref={inputRef}
               />
               <Button
                 onClick={this.DeleteList(item.id)}
